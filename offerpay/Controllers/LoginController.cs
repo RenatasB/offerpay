@@ -37,6 +37,7 @@ namespace offerpay.Controllers
 			new SaltedHash().GetHashAndSaltString(user.Password,out hash,out salt);
 			user.Password = hash;
 			user.Salt = salt;
+			user.Role = "registered";
 			_context.User.Add(user);
 			await _context.SaveChangesAsync();
 
@@ -61,8 +62,9 @@ namespace offerpay.Controllers
 			var claims = new[]
 			{
 				new Claim(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Sub,user.Username),
-				new Claim(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Sub,user.Name),
-				new Claim(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString())
+				new Claim(ClaimTypes.Role,user.Role),
+				new Claim(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Jti,Guid.NewGuid().ToString()),
+				new Claim("id",user.Id.ToString())
 
 			};
 			var token = new JwtSecurityToken(

@@ -23,7 +23,7 @@ namespace offerpay.Controllers
 
         // GET: api/Offers
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<IEnumerable<Offer>>> GetOffer()
         {
             return await _context.Offer.ToListAsync();
@@ -31,7 +31,7 @@ namespace offerpay.Controllers
 
         // GET: api/Offers/5
         [HttpGet("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Offer>> GetOffer(int id)
         {
             var offer = await _context.Offer.FindAsync(id);
@@ -48,7 +48,7 @@ namespace offerpay.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> PutOffer(int id, Offer offer)
         {
             if (id != offer.Id)
@@ -81,7 +81,7 @@ namespace offerpay.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Offer>> PostOffer(Offer offer)
         {
             _context.Offer.Add(offer);
@@ -92,7 +92,7 @@ namespace offerpay.Controllers
 
         // DELETE: api/Offers/5
         [HttpDelete("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Offer>> DeleteOffer(int id)
         {
             var offer = await _context.Offer.FindAsync(id);

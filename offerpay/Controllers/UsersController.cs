@@ -22,7 +22,7 @@ namespace offerpay.Controllers
         }
 
         // GET: api/Users
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<User>>> GetUser()
         {
@@ -34,6 +34,11 @@ namespace offerpay.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<User>> GetUser(int id)
         {
+
+            if (!(id == int.Parse(HttpContext.User.FindFirst("id").Value) || HttpContext.User.IsInRole("Admin")))
+                return Forbid();
+
+
             var user = await _context.User.FindAsync(id);
 
             if (user == null)
@@ -48,7 +53,7 @@ namespace offerpay.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> PutUser(int id, User user)
         {
             if (id != user.Id)
@@ -81,7 +86,7 @@ namespace offerpay.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<User>> PostUser(User user)
         {
             _context.User.Add(user);
@@ -92,7 +97,7 @@ namespace offerpay.Controllers
 
         // DELETE: api/Users/5
         [HttpDelete("{id}")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<User>> DeleteUser(int id)
         {
             var user = await _context.User.FindAsync(id);
@@ -113,6 +118,9 @@ namespace offerpay.Controllers
         [Route("{userId}/rewards")]
         public async Task<ActionResult<IEnumerable<Reward>>> GetReward(int userId)
         {
+            if (!(userId == int.Parse(HttpContext.User.FindFirst("id").Value) || HttpContext.User.IsInRole("Admin")))
+                return Forbid();
+
             var user = await _context.User.FindAsync(userId);
             if (user == null)
             {
@@ -125,6 +133,9 @@ namespace offerpay.Controllers
         [Route("{userId}/rewards/{id}")]
         public async Task<ActionResult<Reward>> GetReward(int userId,int id)
         {
+            if (!(userId == int.Parse(HttpContext.User.FindFirst("id").Value) || HttpContext.User.IsInRole("Admin")))
+                return Forbid();
+
             var user = await _context.User.FindAsync(userId);
             if (user == null)
             {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,7 @@ namespace offerpay.Controllers
 
         // GET: api/Rewards
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<IEnumerable<Reward>>> GetReward()
         {
             return await _context.Reward.ToListAsync();
@@ -29,6 +31,7 @@ namespace offerpay.Controllers
 
         // GET: api/Rewards/5
         [HttpGet("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Reward>> GetReward(int id)
         {
             var reward = await _context.Reward.FindAsync(id);
@@ -45,6 +48,7 @@ namespace offerpay.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> PutReward(int id, Reward reward)
         {
             if (id != reward.Id)
@@ -77,6 +81,7 @@ namespace offerpay.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Reward>> PostReward(Reward reward)
         {
             _context.Reward.Add(reward);
@@ -87,6 +92,7 @@ namespace offerpay.Controllers
 
         // DELETE: api/Rewards/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Reward>> DeleteReward(int id)
         {
             var reward = await _context.Reward.FindAsync(id);
